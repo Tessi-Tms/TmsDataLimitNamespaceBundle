@@ -1,0 +1,26 @@
+{
+  "name": "tms/data-limit-namespace-bundle",
+  "type": "symfony-bundle",
+  "description": "Symfony2 DataLimitNamespaceBundle",
+  "keywords": ["data", "limit", "hash", "namespace"],
+  "authors": [
+    {
+      "name": "Gabriel Bondaz",
+      "email": "gabriel.bondaz@idci-consulting.fr",
+      "homepage": "http://www.idci-consulting.fr"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "symfony/framework-bundle":">=2.3",
+    "ruflin/elastica": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-0": { "Tms\\Bundle\\DataLimitNamespaceBundle\\": "" }
+  },
+  "target-dir": "Tms/Bundle/DataLimitNamespaceBundle",
+  "minimum-stability": "dev"
+}

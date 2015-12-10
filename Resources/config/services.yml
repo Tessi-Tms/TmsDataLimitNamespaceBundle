@@ -1,4 +1,3 @@
 services:
-#    tms_data_limit_namespace.example:
-#        class: Tms\DataLimitNamespaceBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    tms_data_limit_namespace.provider.elastic_search:
+        class: Tms\DataLimitNamespaceBundle\DataProvider\ElasticSearchDataProvider
