@@ -19,8 +19,8 @@
     "phpunit/phpunit": "*"
   },
   "autoload": {
-    "psr-0": { "Tms\\Bundle\\DataLimitNamespaceBundle\\": "" }
+    "psr-0": { "Tms\\DataLimitNamespaceBundle\\": "" }
   },
-  "target-dir": "Tms/Bundle/DataLimitNamespaceBundle",
+  "target-dir": "Tms/DataLimitNamespaceBundle",
   "minimum-stability": "dev"
 }
