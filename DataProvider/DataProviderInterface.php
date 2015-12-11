@@ -35,4 +35,13 @@ interface DataProviderInterface
      * @return boolean
      */
     public function isLimitReached(array $data, array $keys, $namespace, $limit = 1);
+
+    /**
+     * Store
+     *
+     * @param array $data
+     * @param array $keys
+     * @param string $namespace
+     */
+    public function store(array $data, array $keys, $namespace);
 }

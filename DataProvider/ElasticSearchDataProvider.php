@@ -3,12 +3,13 @@
 namespace Tms\DataLimitNamespaceBundle\DataProvider;
 
 use Elastica\Client;
+use Elastica\Document;
+use Elastica\Search;
 use Elastica\Filter\BoolAnd;
+use Elastica\Filter\Term;
 use Elastica\Query;
 use Elastica\Query\QueryString;
 use Elastica\Query\Match;
-use Elastica\Filter\Term;
-use Elastica\Search;
 use Elastica\Type\Mapping;
 
 class ElasticSearchDataProvider implements DataProviderInterface
@@ -49,8 +50,9 @@ class ElasticSearchDataProvider implements DataProviderInterface
 
         foreach ($keys as $key => $value) {
             $esTerm->setTerm('keys', $value);
-            $esFilterAnd->addFilter($esTerm);
         }
+
+        $esFilterAnd->addFilter($esTerm);
 
         $esQuery = new Query();
         $esQuery->setFields(['hash', 'keys']);
@@ -72,11 +74,28 @@ class ElasticSearchDataProvider implements DataProviderInterface
      */
     public function isLimitReached(array $data, array $keys, $namespace, $limit = 1)
     {
-        // Reorder keys
-        // Get the count of hash based on given namespace, data & limit
-        // count lower than limit return false
+        $count = $this->getCount($data, $keys, $namespace);
 
-        return true;
+        return $count >= $limit;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function store(array $data, array $keys, $namespace)
+    {
+        $values = $this->getValues($data, $keys);
+        $hash = $this->getHash($values);
+
+        $this->esIndex->getType($namespace)->addDocument(new Document(
+            '',
+            array(
+                'hash' => $hash,
+                'keys' => $keys
+            )
+        ));
+
+        $this->esIndex->refresh();
     }
 
     /**
@@ -118,7 +137,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
     /**
      * Get hash based on given data
      *
-     * @param $data
+     * @param string|array $data
      *
      * @return string
      */
