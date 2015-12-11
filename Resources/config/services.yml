@@ -1,3 +1,14 @@
 services:
+
+    # Elasticsearch client
+    tms_data_limit_namespace.elastic_search_client:
+        class: Elastica\Client
+        arguments:
+            - { 'host': localhost, 'port': 9200 }
+
+    # Providers
     tms_data_limit_namespace.provider.elastic_search:
         class: Tms\DataLimitNamespaceBundle\DataProvider\ElasticSearchDataProvider
+        arguments:
+            - @tms_data_limit_namespace.elastic_search_client
+            - 'tms_limit'

@@ -1,34 +1,65 @@
 <?php
 
+/**
+ * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
+ */
+
 namespace Tms\DataLimitNamespaceBundle\DataProvider;
 
 use Elastica\Client;
 use Elastica\Document;
-use Elastica\Search;
-use Elastica\Filter\BoolAnd;
 use Elastica\Filter\Term;
 use Elastica\Query;
-use Elastica\Query\QueryString;
-use Elastica\Query\Match;
 use Elastica\Type\Mapping;
 
 class ElasticSearchDataProvider implements DataProviderInterface
 {
+    /**
+     * @var Elastica\Client
+     */
     private $client;
-    private $esIndex;
+
+    /**
+     * @var Elastica\Index
+     */
+    private $index;
+
+    /**
+     * Get hash based on given data
+     *
+     * @param array $data
+     * @param array $keys
+     *
+     * @return string
+     */
+    protected function getHash($data, $keys)
+    {
+        asort($keys);
+        $values = array();
+
+        foreach ($keys as $key) {
+            if (isset($data[$key])) {
+                $values[] = $data[$key];
+            }
+        }
+
+        return md5(implode('', $values));
+    }
 
     /**
      * Constructor
+     *
+     * @param Client  $client    The elastic search client.
+     * @param string  $indexName The elastic search index name.
+     * @param boolean $delete    Delete the index if already exist (default = false).
      */
-    public function __construct()
+    public function __construct(Client $client, $indexName, $delete = false)
     {
-        $this->client = new Client(array('localhost', 9200));
-        $this->esIndex = $this->client->getIndex('limit_data');
+        $this->client = $client;
+        $this->index  = $client->getIndex($indexName);
 
-        // Checks if the index is already created
-        if (!$this->esIndex->exists()) {
-            $this->esIndex->create();
-        }
+        // Create the index.
+        $this->index->create(array(), $delete);
     }
 
     /**
@@ -37,28 +68,25 @@ class ElasticSearchDataProvider implements DataProviderInterface
     public function getCount(array $data, array $keys, $namespace)
     {
         if (!$this->hasNamespace($namespace)) {
-            $this->defineMapping($namespace);
+            return 0;
         }
 
-        $values = $this->getValues($data, $keys);
-        $hash = $this->getHash($values);
+        // Build the query
+        $query = new Query();
+        $query->setFields(array('hash', 'keys'));
 
-        $esTerm = new Term();
-        $esFilterAnd = new BoolAnd();
+        // Add hash term
+        $term = new Term();
+        $term->setTerm('hash', $this->getHash($data, $keys));
 
-        $esTerm->setTerm('hash', $hash);
+        $query->setPostFilter($term);
 
-        foreach ($keys as $key => $value) {
-            $esTerm->setTerm('keys', $value);
-        }
-
-        $esFilterAnd->addFilter($esTerm);
-
-        $esQuery = new Query();
-        $esQuery->setFields(['hash', 'keys']);
-        $esQuery->setPostFilter($esFilterAnd);
-
-        return $this->esIndex->getType($namespace)->search($esQuery)->count();
+        return $this
+            ->index
+            ->getType($namespace)
+            ->search($query)
+            ->getTotalHits()
+        ;
     }
 
     /**
@@ -66,7 +94,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
      */
     public function hasNamespace($namespace)
     {
-        return $this->esIndex->getType($namespace)->exists();
+        return $this->index->getType($namespace)->exists();
     }
 
     /**
@@ -74,9 +102,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
      */
     public function isLimitReached(array $data, array $keys, $namespace, $limit = 1)
     {
-        $count = $this->getCount($data, $keys, $namespace);
-
-        return $count >= $limit;
+        return $limit <= $this->getCount($data, $keys, $namespace);
     }
 
     /**
@@ -84,75 +110,27 @@ class ElasticSearchDataProvider implements DataProviderInterface
      */
     public function store(array $data, array $keys, $namespace)
     {
-        $values = $this->getValues($data, $keys);
-        $hash = $this->getHash($values);
+        $type = $this->index->getType($namespace);
 
-        $this->esIndex->getType($namespace)->addDocument(new Document(
-            '',
-            array(
-                'hash' => $hash,
-                'keys' => $keys
-            )
-        ));
-
-        $this->esIndex->refresh();
-    }
-
-    /**
-     * Define a mapping
-     *
-     * @param string $namespace
-     */
-    private function defineMapping($namespace)
-    {
+        // Build mapping
         $mapping = new Mapping();
-        $mapping->setType($this->esIndex->getType($namespace));
+        $mapping->setType($type);
         $mapping->setProperties(array(
-            'hash'=> array('type' => 'string'),
-            'keys'=> array('type' => 'string'),
+            'hash' => array('type' => 'string', 'include_in_all' => true),
+            'keys' => array('type' => 'string', 'include_in_all' => true),
         ));
         $mapping->send();
-    }
 
-    /**
-     * Get the values of the given data with the given keys
-     *
-     * @param array $data
-     * @param array $keys
-     *
-     * @return array
-     */
-    public function getValues(array $data, array $keys)
-    {
-        $result = array();
-        sort($keys);
+        // Build document
+        $document = new Document(
+            '',
+            array(
+                'hash' => $this->getHash($data, $keys),
+                'keys' => $keys
+            )
+        );
 
-        foreach($keys as $key) {
-            $result[] = $data[$key];
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get hash based on given data
-     *
-     * @param string|array $data
-     *
-     * @return string
-     */
-    public function getHash($data)
-    {
-        if (is_string($data)) {
-            return md5($data);
-        } elseif (is_array($data)) {
-            $string  = "";
-
-            foreach($data as $value) {
-                $string .= $value;
-            }
-
-            return md5($string);
-        }
+        $type->addDocument($document);
+        $this->index->refresh();
     }
 }

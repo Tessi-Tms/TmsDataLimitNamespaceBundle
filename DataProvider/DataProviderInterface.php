@@ -1,11 +1,15 @@
 <?php
 
+/**
+ * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
+ */
+
 namespace Tms\DataLimitNamespaceBundle\DataProvider;
 
 interface DataProviderInterface
 {
     /**
-     * Get the count
+     * Count
      *
      * @param array  $data
      * @param array  $keys
@@ -37,7 +41,7 @@ interface DataProviderInterface
     public function isLimitReached(array $data, array $keys, $namespace, $limit = 1);
 
     /**
-     * Store
+     * Store the given data
      *
      * @param array  $data
      * @param array  $keys
