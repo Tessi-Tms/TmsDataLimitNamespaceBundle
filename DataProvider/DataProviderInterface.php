@@ -7,8 +7,8 @@ interface DataProviderInterface
     /**
      * Get the count
      *
-     * @param array $data
-     * @param array $keys
+     * @param array  $data
+     * @param array  $keys
      * @param string $namespace
      *
      * @return integer
@@ -27,9 +27,9 @@ interface DataProviderInterface
     /**
      * Check if the limit is reached
      *
-     * @param array $data
-     * @param array $keys
-     * @param string $namespace
+     * @param array   $data
+     * @param array   $keys
+     * @param string  $namespace
      * @param integer $limit
      *
      * @return boolean
@@ -39,8 +39,8 @@ interface DataProviderInterface
     /**
      * Store
      *
-     * @param array $data
-     * @param array $keys
+     * @param array  $data
+     * @param array  $keys
      * @param string $namespace
      */
     public function store(array $data, array $keys, $namespace);
