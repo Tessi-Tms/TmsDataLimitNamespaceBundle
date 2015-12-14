@@ -1,9 +1,9 @@
 <?php
 
-namespace Tms\DataLimitNamespaceBundle\Tests\DataProvider;
+namespace Tms\Bundle\DataLimitNamespaceBundle\Tests\DataProvider;
 
 use Elastica\Client;
-use Tms\DataLimitNamespaceBundle\DataProvider\ElasticSearchDataProvider;
+use Tms\Bundle\DataLimitNamespaceBundle\DataProvider\ElasticSearchDataProvider;
 
 class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
 {

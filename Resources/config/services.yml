@@ -8,7 +8,7 @@ services:
 
     # Providers
     tms_data_limit_namespace.provider.elasticsearch:
-        class: Tms\DataLimitNamespaceBundle\DataProvider\ElasticSearchDataProvider
+        class: Tms\Bundle\DataLimitNamespaceBundle\DataProvider\ElasticSearchDataProvider
         arguments:
             - @tms_data_limit_namespace.elasticsearch_client
             - %tms_data_limit_namespace.elasticsearch_index_name%

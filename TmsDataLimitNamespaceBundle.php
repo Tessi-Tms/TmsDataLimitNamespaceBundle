@@ -1,6 +1,6 @@
 <?php
 
-namespace Tms\DataLimitNamespaceBundle;
+namespace Tms\Bundle\DataLimitNamespaceBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

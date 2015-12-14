@@ -4,7 +4,7 @@
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
  */
 
-namespace Tms\DataLimitNamespaceBundle\DataProvider;
+namespace Tms\Bundle\DataLimitNamespaceBundle\DataProvider;
 
 use Elastica\Client;
 use Elastica\Document;
