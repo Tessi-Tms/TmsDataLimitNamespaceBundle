@@ -13,7 +13,7 @@ $limit     = 1;
 
 $isReached = $this
     ->getContainer()
-    ->get('tms_data_limit_namespace.provider.elastic_search')
+    ->get('tms_data_limit_namespace.provider.elasticsearch')
     ->isLimitReached($data, array('k1', 'k2'), $namespace, $limit)
 ;
 ```
@@ -26,7 +26,7 @@ Now you could ask to store this dataset:
 ```php
 $this
     ->getContainer()
-    ->get('tms_data_limit_namespace.provider.elastic_search')
+    ->get('tms_data_limit_namespace.provider.elasticsearch')
     ->store($data, array('k1', 'k2'), $namespace)
 ;
 ```
@@ -42,14 +42,14 @@ Ask an other one if the limit is reached:
 // With a limit 1, will return true.
 $this
     ->getContainer()
-    ->get('tms_data_limit_namespace.provider.elastic_search')
+    ->get('tms_data_limit_namespace.provider.elasticsearch')
     ->isLimitReached($data, array('k1', 'k2'), $namespace, 1)
 ;
 
 // With a limit 2, will return false.
 $this
     ->getContainer()
-    ->get('tms_data_limit_namespace.provider.elastic_search')
+    ->get('tms_data_limit_namespace.provider.elasticsearch')
     ->isLimitReached($data, array('k1', 'k2'), $namespace, 2)
 ;
 ```

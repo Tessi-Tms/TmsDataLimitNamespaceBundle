@@ -49,6 +49,14 @@ imports:
     - { resource: @TmsDataLimitNamespaceBundle/Resources/config/config.yml }
 ```
 
+Define variable values in `parameters.yml`:
+```
+parameters:
+    elasticsearch_host: localhost
+    elasticsearch_port: 9200
+    tms_data_limit_namespace.elasticsearch_index_name: 'tms_limit'
+```
+
 
 Documentation
 -------------
