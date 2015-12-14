@@ -58,8 +58,11 @@ class ElasticSearchDataProvider implements DataProviderInterface
         $this->client = $client;
         $this->index  = $client->getIndex($indexName);
 
-        // Create the index.
-        $this->index->create(array(), $delete);
+        // Checks if the given index is already created
+        if (!$this->index->exists($indexName)) {
+            // Create the index.
+            $this->index->create(array(), $delete);
+        }
     }
 
     /**
