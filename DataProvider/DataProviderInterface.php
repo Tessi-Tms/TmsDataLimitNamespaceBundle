@@ -46,6 +46,8 @@ interface DataProviderInterface
      * @param array  $data
      * @param array  $keys
      * @param string $namespace
+     *
+     * @return array
      */
     public function get(array $data, array $keys, $namespace);
 
