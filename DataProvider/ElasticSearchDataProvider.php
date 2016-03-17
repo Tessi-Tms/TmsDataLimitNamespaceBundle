@@ -113,7 +113,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
     public function get(array $data, array $keys, $namespace)
     {
         if (!$this->hasNamespace($namespace)) {
-            return 0;
+            return array();
         }
 
         // Build the query
