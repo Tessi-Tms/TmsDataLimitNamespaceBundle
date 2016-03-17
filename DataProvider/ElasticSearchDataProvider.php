@@ -118,7 +118,6 @@ class ElasticSearchDataProvider implements DataProviderInterface
 
         // Build the query
         $query = new Query();
-        $query->setFields(array('hash', 'keys'));
 
         // Add hash term
         $term = new Term();
@@ -132,7 +131,6 @@ class ElasticSearchDataProvider implements DataProviderInterface
             ->getResults()
         ;
         $results = array();
-
         foreach ($esResults as $esResult) {
             $results[] = $esResult->getData();
         }
@@ -158,7 +156,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
 
         // Build document
         $document = new Document(
-            $this->getHash($data, $keys),
+            '',
             array_merge(
                 $data,
                 array(
