@@ -41,6 +41,15 @@ interface DataProviderInterface
     public function isLimitReached(array $data, array $keys, $namespace, $limit = 1);
 
     /**
+     * Retrieve data.
+     *
+     * @param array  $data
+     * @param array  $keys
+     * @param string $namespace
+     */
+    public function get(array $data, array $keys, $namespace);
+
+    /**
      * Store the given data
      *
      * @param array  $data

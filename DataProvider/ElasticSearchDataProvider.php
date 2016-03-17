@@ -81,7 +81,6 @@ class ElasticSearchDataProvider implements DataProviderInterface
         // Add hash term
         $term = new Term();
         $term->setTerm('hash', $this->getHash($data, $keys));
-
         $query->setPostFilter($term);
 
         return $this
@@ -111,6 +110,39 @@ class ElasticSearchDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
+    public function get(array $data, array $keys, $namespace)
+    {
+        if (!$this->hasNamespace($namespace)) {
+            return 0;
+        }
+
+        // Build the query
+        $query = new Query();
+        $query->setFields(array('hash', 'keys'));
+
+        // Add hash term
+        $term = new Term();
+        $term->setTerm('hash', $this->getHash($data, $keys));
+        $query->setPostFilter($term);
+
+        $esResults = $this
+            ->index
+            ->getType($namespace)
+            ->search($query)
+            ->getResults()
+        ;
+        $results = array();
+
+        foreach ($esResults as $esResult) {
+            $results[] = $esResult->getData();
+        }
+
+        return $results;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function store(array $data, array $keys, $namespace)
     {
         $type = $this->index->getType($namespace);
@@ -126,10 +158,13 @@ class ElasticSearchDataProvider implements DataProviderInterface
 
         // Build document
         $document = new Document(
-            '',
-            array(
-                'hash' => $this->getHash($data, $keys),
-                'keys' => $keys
+            $this->getHash($data, $keys),
+            array_merge(
+                $data,
+                array(
+                    'hash' => $this->getHash($data, $keys),
+                    'keys' => $keys
+                )
             )
         );
 
