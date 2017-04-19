@@ -28,12 +28,18 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     public function testHasNamespace()
     {
         $provider = self::buildProvider();
+        $data = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
 
         // Has namespace
-        $this->assertEquals(
-            false,
-            $provider->hasNamespace('dummy_namespace')
+        $this->assertFalse($provider->hasNamespace('has_dummy_namespace'));
+
+        $provider->store(
+            $data,
+            array('key1', 'key2'),
+            'has_dummy_namespace'
         );
+
+        $this->assertTrue($provider->hasNamespace('has_dummy_namespace'));
     }
 
     public function testStore()
@@ -95,18 +101,18 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
         $data = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
 
         $provider = self::buildProvider();
-        for($i=0; $i<200; $i++) {
+        for($i = 0; $i < 200; $i++) {
             $provider->store(
                 $data,
                 array('key1', 'key2'),
-                'dummy_namespace'
+                'get_count_dummy_namespace'
             );
         }
 
         $this->assertEquals(200, $provider->getCount(
             $data,
             array('key1', 'key2'),
-            'dummy_namespace'
+            'get_count_dummy_namespace'
         ));
     }
 
@@ -119,35 +125,35 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($provider->isLimitReached(
             $data,
             array('key1', 'key2'),
-            'dummy_namespace',
+            'limit_reached_dummy_namespace',
             1
         ));
 
         $provider->store(
             $data,
             array('key1', 'key2'),
-            'dummy_namespace'
+            'limit_reached_dummy_namespace'
         );
 
         $this->assertTrue($provider->isLimitReached(
             $data,
             array('key1', 'key2'),
-            'dummy_namespace',
+            'limit_reached_dummy_namespace',
             1
         ));
 
-        for($i=0; $i<29; $i++) {
+        for($i = 0; $i < 29; $i++) {
             $provider->store(
                 $data,
                 array('key1', 'key2'),
-                'dummy_namespace'
+                'limit_reached_dummy_namespace'
             );
         }
 
         $this->assertTrue($provider->isLimitReached(
             $data,
             array('key1', 'key2'),
-            'dummy_namespace',
+            'limit_reached_dummy_namespace',
             30
         ));
     }
