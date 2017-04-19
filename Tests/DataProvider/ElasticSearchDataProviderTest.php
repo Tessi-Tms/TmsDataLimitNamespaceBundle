@@ -9,6 +9,16 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
 {
     const ELASTIC_SEARCH_INDEX_NAME = 'tms_limit_test';
 
+    public function setUp()
+    {
+        $client = self::buildClient();
+        // Delete the index if already exists
+        $index = $client->getIndex(self::ELASTIC_SEARCH_INDEX_NAME);
+        if ($index) {
+            $index->delete();
+        }
+    }
+
     public static function buildClient()
     {
         return new Client(array('host' => 'localhost', 'port' => 9200));
