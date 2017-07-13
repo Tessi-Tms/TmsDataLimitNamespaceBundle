@@ -13,7 +13,7 @@
   "require": {
     "php": ">=5.3.3",
     "symfony/framework-bundle":">=2.3",
-    "ruflin/elastica": "~2.1"
+    "ruflin/elastica": ">=2.1"
   },
   "require-dev": {
     "phpunit/phpunit": "*"
