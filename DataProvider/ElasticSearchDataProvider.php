@@ -8,7 +8,7 @@ namespace Tms\Bundle\DataLimitNamespaceBundle\DataProvider;
 
 use Elastica\Client;
 use Elastica\Document;
-use Elastica\Filter\Term;
+use Elastica\Query\Term;
 use Elastica\Query;
 use Elastica\Type\Mapping;
 
@@ -76,7 +76,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
 
         // Build the query
         $query = new Query();
-        $query->setFields(array('hash', 'keys'));
+        $query->setStoredFields(array('hash', 'keys'));
 
         // Add hash term
         $term = new Term();
