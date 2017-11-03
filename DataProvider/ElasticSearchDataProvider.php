@@ -2,6 +2,7 @@
 
 /**
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
+ * @author:  Nabil Mansouri <nabil.mansouri@tessi.fr>
  */
 
 namespace Tms\Bundle\DataLimitNamespaceBundle\DataProvider;
@@ -25,28 +26,6 @@ class ElasticSearchDataProvider implements DataProviderInterface
     private $index;
 
     /**
-     * Get hash based on given data
-     *
-     * @param array $data
-     * @param array $keys
-     *
-     * @return string
-     */
-    protected function getHash($data, $keys)
-    {
-        asort($keys);
-        $values = array();
-
-        foreach ($keys as $key) {
-            if (isset($data[$key])) {
-                $values[] = $data[$key];
-            }
-        }
-
-        return md5(implode('', $values));
-    }
-
-    /**
      * Constructor
      *
      * @param Client  $client    The elastic search client.
@@ -65,6 +44,23 @@ class ElasticSearchDataProvider implements DataProviderInterface
         }
     }
 
+     /**
+      * {@inheritdoc}
+      */
+    public function generatetHash(array $data, array $keys)
+    {
+        asort($keys);
+        $values = array();
+
+        foreach ($keys as $key) {
+            if (isset($data[$key])) {
+                $values[] = $data[$key];
+            }
+        }
+
+        return md5(implode('', $values));
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -80,7 +76,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
 
         // Add hash term
         $term = new Term();
-        $term->setTerm('hash', $this->getHash($data, $keys));
+        $term->setTerm('hash', $this->generatetHash($data, $keys));
         $query->setPostFilter($term);
 
         return $this
@@ -121,7 +117,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
 
         // Add hash term
         $term = new Term();
-        $term->setTerm('hash', $this->getHash($data, $keys));
+        $term->setTerm('hash', $this->generatetHash($data, $keys));
         $query->setPostFilter($term);
 
         $esResults = $this
@@ -160,7 +156,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
             array_merge(
                 $data,
                 array(
-                    'hash' => $this->getHash($data, $keys),
+                    'hash' => $this->generatetHash($data, $keys),
                     'keys' => $keys
                 )
             )

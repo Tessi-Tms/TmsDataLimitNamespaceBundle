@@ -2,12 +2,23 @@
 
 /**
  * @author:  Gabriel BONDAZ <gabriel.bondaz@idci-consulting.fr>
+ * @author:  Nabil Mansouri <nabil.mansouri@tessi.fr>
  */
 
 namespace Tms\Bundle\DataLimitNamespaceBundle\DataProvider;
 
 interface DataProviderInterface
 {
+    /**
+     * Generate hash based on given data
+     *
+     * @param array $data
+     * @param array $keys
+     *
+     * @return string
+     */
+    public function generatetHash(array $data, array $keys);
+
     /**
      * Count
      *
