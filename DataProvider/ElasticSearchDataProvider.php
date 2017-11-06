@@ -137,7 +137,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function store(array $data, array $keys, $namespace)
+    public function store(array $data, array $keys, $namespace, $id = '')
     {
         $type = $this->index->getType($namespace);
 
@@ -152,7 +152,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
 
         // Build document
         $document = new Document(
-            '',
+            $id,
             array_merge(
                 $data,
                 array(

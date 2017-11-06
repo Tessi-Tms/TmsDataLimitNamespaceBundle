@@ -65,9 +65,10 @@ interface DataProviderInterface
     /**
      * Store the given data
      *
+     * @param string $id
      * @param array  $data
      * @param array  $keys
      * @param string $namespace
      */
-    public function store(array $data, array $keys, $namespace);
+    public function store(array $data, array $keys, $namespace, $id);
 }
