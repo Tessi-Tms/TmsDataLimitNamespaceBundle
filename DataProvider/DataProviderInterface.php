@@ -10,7 +10,7 @@ namespace Tms\Bundle\DataLimitNamespaceBundle\DataProvider;
 interface DataProviderInterface
 {
     /**
-     * Generate hash based on given data
+     * Generate hash based on given data.
      *
      * @param array $data
      * @param array $keys
@@ -20,34 +20,34 @@ interface DataProviderInterface
     public function generatetHash(array $data, array $keys);
 
     /**
-     * Count
+     * Count.
      *
      * @param array  $data
      * @param array  $keys
      * @param string $namespace
      *
-     * @return integer
+     * @return int
      */
     public function getCount(array $data, array $keys, $namespace);
 
     /**
-     * Check if namespace exits
+     * Check if namespace exits.
      *
      * @param $namespace
      *
-     * @return boolean
+     * @return bool
      */
     public function hasNamespace($namespace);
 
     /**
-     * Check if the limit is reached
+     * Check if the limit is reached.
      *
-     * @param array   $data
-     * @param array   $keys
-     * @param string  $namespace
-     * @param integer $limit
+     * @param array  $data
+     * @param array  $keys
+     * @param string $namespace
+     * @param int    $limit
      *
-     * @return boolean
+     * @return bool
      */
     public function isLimitReached(array $data, array $keys, $namespace, $limit = 1);
 
@@ -63,7 +63,7 @@ interface DataProviderInterface
     public function get(array $data, array $keys, $namespace);
 
     /**
-     * Store the given data
+     * Store the given data.
      *
      * @param string $id
      * @param array  $data

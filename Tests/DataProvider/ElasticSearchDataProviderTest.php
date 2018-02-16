@@ -7,7 +7,7 @@ use Elastica\Connection;
 use Tms\Bundle\DataLimitNamespaceBundle\DataProvider\ElasticSearchDataProvider;
 
 /**
- * Class ElasticSearchDataProviderTest
+ * Class ElasticSearchDataProviderTest.
  */
 class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,7 +17,7 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     private $provider;
 
     /**
-     * Set up
+     * Set up.
      */
     public function setUp()
     {
@@ -30,7 +30,7 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tear down
+     * Tear down.
      */
     public function tearDown()
     {
@@ -42,7 +42,7 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if ES_HOSt env variable exists and returns its. Returns default host otherwise
+     * Check if ES_HOSt env variable exists and returns its. Returns default host otherwise.
      *
      * @return string
      */
@@ -52,9 +52,9 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if ES_PORT env variable exists and returns its. Returns default port otherwise
+     * Check if ES_PORT env variable exists and returns its. Returns default port otherwise.
      *
-     * @return integer
+     * @return int
      */
     protected function getPort()
     {
@@ -62,7 +62,7 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test hasNamespace
+     * Test hasNamespace.
      */
     public function testHasNamespace()
     {
@@ -81,9 +81,8 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test store
+     * Test store.
      */
-
     public function testStore()
     {
         $data = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
@@ -137,13 +136,13 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getCount
+     * Test getCount.
      */
     public function testGetCount()
     {
         $data = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
 
-        for($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 200; ++$i) {
             $this->provider->store(
                 $data,
                 array('key1', 'key2'),
@@ -159,7 +158,7 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test isLimitReached
+     * Test isLimitReached.
      */
     public function testIsLimitReached()
     {
@@ -185,7 +184,7 @@ class ElasticSearchDataProviderTest extends \PHPUnit_Framework_TestCase
             1
         ));
 
-        for($i = 0; $i < 29; $i++) {
+        for ($i = 0; $i < 29; ++$i) {
             $this->provider->store(
                 $data,
                 array('key1', 'key2'),

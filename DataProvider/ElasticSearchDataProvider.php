@@ -26,16 +26,16 @@ class ElasticSearchDataProvider implements DataProviderInterface
     private $index;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param Client  $client    The elastic search client.
-     * @param string  $indexName The elastic search index name.
-     * @param boolean $delete    Delete the index if already exist (default = false).
+     * @param Client $client    the elastic search client
+     * @param string $indexName the elastic search index name
+     * @param bool   $delete    delete the index if already exist (default = false)
      */
     public function __construct(Client $client, $indexName, $delete = false)
     {
         $this->client = $client;
-        $this->index  = $client->getIndex($indexName);
+        $this->index = $client->getIndex($indexName);
 
         // Checks if the given index is already created
         if (!$this->index->exists($indexName)) {
@@ -44,9 +44,9 @@ class ElasticSearchDataProvider implements DataProviderInterface
         }
     }
 
-     /**
-      * {@inheritdoc}
-      */
+    /**
+     * {@inheritdoc}
+     */
     public function generatetHash(array $data, array $keys)
     {
         asort($keys);
@@ -157,7 +157,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
                 $data,
                 array(
                     'hash' => $this->generatetHash($data, $keys),
-                    'keys' => $keys
+                    'keys' => $keys,
                 )
             )
         );
