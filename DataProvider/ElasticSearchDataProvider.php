@@ -162,7 +162,12 @@ class ElasticSearchDataProvider implements DataProviderInterface
             )
         );
 
-        $type->addDocument($document);
+        if ('' !== $id && $type->getDocument($id)) {
+            $type->updateDocument($document);
+        } else {
+            $type->addDocument($document);
+        }
+
         $this->index->refresh();
     }
 }
