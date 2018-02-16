@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+    php:
+        container_name: tms-eligibility-php
+        build:
+            context: .docker/php/build
+            dockerfile: Dockerfile-${PHP_VERSION}
+        volumes:
+            - ./:/var/www/html
+            - ${VOLUME_ROOT_PATH}/${PROJECT_NAME}/composer:/root/.composer
