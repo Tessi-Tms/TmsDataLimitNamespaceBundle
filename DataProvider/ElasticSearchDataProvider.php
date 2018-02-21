@@ -139,6 +139,7 @@ class ElasticSearchDataProvider implements DataProviderInterface
      */
     public function store(array $data, array $keys, $namespace, $id = '')
     {
+        $isExist = false;
         $type = $this->index->getType($namespace);
 
         // Build mapping
@@ -161,8 +162,13 @@ class ElasticSearchDataProvider implements DataProviderInterface
                 )
             )
         );
+        try {
+            $type->getDocument($id);
+            $isExist = true;
+        } catch (\Exception $e) {
+        }
 
-        if ('' !== $id && $type->getDocument($id)) {
+        if ($isExist) {
             $type->updateDocument($document);
         } else {
             $type->addDocument($document);
