@@ -4,11 +4,11 @@ services:
     tms_data_limit_namespace.elasticsearch_client:
         class: Elastica\Client
         arguments:
-            - { 'host': %elasticsearch_host%, 'port': %elasticsearch_port% }
+            - { 'host': "%elasticsearch_host%", 'port': "%elasticsearch_port%" }
 
     # Providers
     tms_data_limit_namespace.provider.elasticsearch:
         class: Tms\Bundle\DataLimitNamespaceBundle\DataProvider\ElasticSearchDataProvider
         arguments:
-            - @tms_data_limit_namespace.elasticsearch_client
-            - %tms_data_limit_namespace.elasticsearch_index_name%
+            - "@tms_data_limit_namespace.elasticsearch_client"
+            - "%tms_data_limit_namespace.elasticsearch_index_name%"
