@@ -1,2 +1,15 @@
 .idea/
-vendor/
+phpunit.xml
+
+# Gedit
+*~
+
+# Tests
+/Tests/cache
+/Tests/logs
+
+# vendor
+/vendor
+
+# composer
+composer.lock
